@@ -26,7 +26,6 @@ import java.util.*
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
-
 @RestController
 class ProductService {
 
@@ -39,11 +38,11 @@ class ProductService {
     private var gson = Gson()
 
     @GetMapping("/api/product")
-    fun getProduct(@RequestBody nameProduct : String, idCategory : Int): String? {
+    fun getProduct(@RequestBody nameProduct : String, idCategory : String): String? {
         val products = Products()
         products.list = mutableListOf()
-        val productEntities : List<ProductEntity?> = if ((!nameProduct.equals(null) || !idCategory.equals(null))) {
-            productRepository.findAllByNameOrCategory(nameProduct, categoryRepository.findById(idCategory).get())
+        val productEntities : List<ProductEntity?> = if ((!nameProduct.equals(null) || !idCategory.equals(""))) {
+            productRepository.findAllByNameOrCategory(nameProduct, categoryRepository.findById(idCategory.toInt()).get())
         } else
             productRepository.findAll()
         productEntities.forEach() {
