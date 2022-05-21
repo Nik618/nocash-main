@@ -49,12 +49,14 @@ class ProductService {
             price = product.price
         }
 
+        productRepository.save(productEntity)
+
         userProductsRepository.save(UserProductsEntity().apply {
             idUser = userRepository.findById(product.userId!!).get()
             idProduct = productEntity
         })
 
-        return productRepository.save(productEntity)
+        return productEntity
     }
 
     @GetMapping("/api/product")
