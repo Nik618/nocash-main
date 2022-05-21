@@ -2,6 +2,7 @@ package com.example.nocashmain.service
 
 import com.example.nocashmain.dto.Order
 import com.example.nocashmain.dto.Orders
+import com.example.nocashmain.dto.Status
 import com.example.nocashmain.entity.*
 import com.example.nocashmain.repository.*
 import com.google.gson.Gson
@@ -62,12 +63,13 @@ class OrderService {
                 price += count?.times(idProduct?.price!!)!!
                 println(price)
             }
-
+            cartItemsRepository.delete(it!!)
             orderItemsRepository.save(orderItemsEntity)
         }
 
         orderEntity.idTransaction?.value = price
         transactionRepository.save(orderEntity.idTransaction!!)
+
         return orderRepository.save(orderEntity)
     }
 
@@ -95,12 +97,41 @@ class OrderService {
         val order: Order = gson.fromJson(request, object : TypeToken<Order>() {}.type)
         val orderEntity = orderRepository.findById(order.id!!).get()
 
+        if (order.status == "cancel") {
+            val transactionEntity = TransactionEntity().apply {
+                date = Date()
+                idUserTo = orderEntity.idTransaction?.idUserTo
+                idUserFrom = orderEntity.idTransaction?.idUserFrom
+                value = -orderEntity.idTransaction?.value!!
+            }
+            transactionRepository.save(transactionEntity)
+
+            orderEntity.date = Date()
+            orderEntity.idTransaction = transactionEntity
+            orderEntity.status = order.status
+            orderEntity.comment = order.comment
+            orderEntity.cancelComment = order.cancelComment
+            orderEntity.paymentId = order.paymentId
+
+            return orderRepository.save(orderEntity)
+        }
+
         orderEntity.date = Date()
         orderEntity.idTransaction = transactionRepository.findById(order.idTransaction!!).get()
         orderEntity.status = order.status
         orderEntity.comment = order.comment
         orderEntity.cancelComment = order.cancelComment
         orderEntity.paymentId = order.paymentId
+
+        return orderRepository.save(orderEntity)
+    }
+
+    @PostMapping("/api/update/order/status")
+    fun updateOrderStatus(@RequestBody request : String): OrderEntity? {
+        val status: Status = gson.fromJson(request, object : TypeToken<Order>() {}.type)
+        val orderEntity = orderRepository.findById(status.id!!).get()
+
+        orderEntity.status = status.status
 
         return orderRepository.save(orderEntity)
     }
