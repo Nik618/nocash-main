@@ -18,7 +18,6 @@ import java.util.*
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
-@CrossOrigin(origins = ["/**"], maxAge = 3600)
 @RestController
 class OrderService {
 
