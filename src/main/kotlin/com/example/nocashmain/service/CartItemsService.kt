@@ -67,7 +67,7 @@ class CartItemsService {
 
     @PostMapping("/api/update/cartitems")
     fun updateOrder(@RequestBody request : String): CartItemsEntity? {
-        val cartItems: CartItems = gson.fromJson(request, object : TypeToken<Order>() {}.type)
+        val cartItems: CartItems = gson.fromJson(request, object : TypeToken<CartItems>() {}.type)
         val cartItemsEntity = cartItemsRepository.findById(cartItems.id!!).get()
 
         cartItemsEntity.idUser = userRepository.findById(cartItems.idUser!!).get()
