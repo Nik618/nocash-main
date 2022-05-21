@@ -93,7 +93,7 @@ class OrderService {
     }
 
     @GetMapping("/api/remove/order")
-    fun removeOrder(@RequestParam id : Int): Unit? {
+    fun removeOrder(id : Int): Unit? {
         val orderEntity = orderRepository.findById(id).get()
         return orderRepository.delete(orderEntity)
     }

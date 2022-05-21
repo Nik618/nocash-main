@@ -78,7 +78,7 @@ class CartItemsService {
     }
 
     @GetMapping("/api/remove/cartItems")
-    fun removeOrder(@RequestParam id : Int): Unit? {
+    fun removeOrder(id : Int): Unit? {
         val cartItemsEntity = cartItemsRepository.findById(id).get()
         return cartItemsRepository.delete(cartItemsEntity)
     }

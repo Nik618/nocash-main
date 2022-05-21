@@ -72,7 +72,7 @@ class ProductService {
     }
 
     @PostMapping("/api/update/product")
-    fun updateProduct(@RequestBody request : String): ProductEntity? {
+    fun updateProduct(request : String): ProductEntity? {
         val product: Product = gson.fromJson(request, object : TypeToken<Product>() {}.type)
         val productEntity = productRepository.findById(product.id!!).get()
 
@@ -85,7 +85,7 @@ class ProductService {
     }
 
     @GetMapping("/api/remove/product")
-    fun removeProduct(@RequestParam id : Int): Unit? {
+    fun removeProduct(id : Int): Unit? {
         val productEntity = productRepository.findById(id).get()
         return productRepository.delete(productEntity)
     }

@@ -29,7 +29,7 @@ class CategoryService {
     private var gson = Gson()
 
     @GetMapping("/api/category")
-    fun getProduct(@RequestParam nameProduct : String, @RequestParam idCategory : CategoryEntity): String? {
+    fun getProduct(nameProduct : String, idCategory : CategoryEntity): String? {
         val categories = Categories()
         categories.list = mutableListOf()
         val categoryEntities = categoryRepository.findAll()
