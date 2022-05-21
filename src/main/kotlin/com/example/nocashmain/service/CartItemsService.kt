@@ -1,9 +1,6 @@
 package com.example.nocashmain.service
 
-import com.example.nocashmain.dto.CartItems
-import com.example.nocashmain.dto.CartItemsList
-import com.example.nocashmain.dto.Order
-import com.example.nocashmain.dto.Orders
+import com.example.nocashmain.dto.*
 import com.example.nocashmain.entity.*
 import com.example.nocashmain.repository.CartItemsRepository
 import com.example.nocashmain.repository.OrderRepository
@@ -42,7 +39,7 @@ class CartItemsService {
         val cartItems: CartItems = gson.fromJson(request, object : TypeToken<CartItems>() {}.type)
         val cartItemsEntity = CartItemsEntity().apply {
             idUser = userRepository.findById(cartItems.idUser!!).get()
-            idProduct = productRepository.findById(cartItems.idProduct!!).get()
+            idProduct = productRepository.findById(cartItems.idProduct!!.id!!).get()
             count = cartItems.count
         }
 
@@ -50,15 +47,25 @@ class CartItemsService {
     }
 
     @GetMapping("/api/cartitems")
-    fun getOrder(): String? {
+    fun getOrder(userId : Int): String? {
         val cartItemsList = CartItemsList()
         cartItemsList.list = mutableListOf()
-        val cartItemsEntities = cartItemsRepository.findAll()
+        val cartItemsEntities = cartItemsRepository.findAllByIdUser(userRepository.findById(userId).get())
         cartItemsEntities.forEach() {
             cartItemsList.list.add(CartItems().apply {
                 id = it?.id
                 idUser = it?.idUser?.id
-                idProduct = it?.idProduct?.id
+                idProduct = Product().apply {
+                    id = it?.idProduct?.id
+                    name = it?.idProduct?.name
+                    category = Category().apply {
+                        id = it?.idProduct?.category?.id
+                        name = it?.idProduct?.category?.name
+                    }
+                    description = it?.idProduct?.description
+                    count = it?.idProduct?.count
+                    price = it?.idProduct?.price
+                }
                 count = it?.count
             })
         }
@@ -71,7 +78,7 @@ class CartItemsService {
         val cartItemsEntity = cartItemsRepository.findById(cartItems.id!!).get()
 
         cartItemsEntity.idUser = userRepository.findById(cartItems.idUser!!).get()
-        cartItemsEntity.idProduct = productRepository.findById(cartItems.idProduct!!).get()
+        cartItemsEntity.idProduct = productRepository.findById(cartItems.idProduct!!.id!!).get()
         cartItemsEntity.count = cartItems.count
 
         return cartItemsRepository.save(cartItemsEntity)
