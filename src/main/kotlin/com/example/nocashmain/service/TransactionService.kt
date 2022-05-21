@@ -27,8 +27,8 @@ class TransactionService {
     private var gson = Gson()
 
     @PostMapping("/api/create/transaction")
-    fun createOrder(@RequestBody request : String): TransactionEntity? {
-        val transaction: Transaction = gson.fromJson(request, object : TypeToken<Order>() {}.type)
+    fun createTransaction(@RequestBody request : String): TransactionEntity? {
+        val transaction: Transaction = gson.fromJson(request, object : TypeToken<Transaction>() {}.type)
         val transactionEntity = TransactionEntity().apply {
             date = Date()
             idUserTo = userRepository.findById(transaction.idUserTo!!).get()

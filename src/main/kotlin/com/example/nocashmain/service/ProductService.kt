@@ -37,6 +37,20 @@ class ProductService {
 
     private var gson = Gson()
 
+    @PostMapping("/api/create/product")
+    fun createProduct(@RequestBody request : String): ProductEntity? {
+        val product: Product = gson.fromJson(request, object : TypeToken<Product>() {}.type)
+
+        val productEntity = ProductEntity().apply {
+            name = product.name
+            category = categoryRepository.findById(product.category!!).get()
+            description = product.description
+            count = product.count
+        }
+
+        return productRepository.save(productEntity)
+    }
+
     @GetMapping("/api/product")
     fun getProduct(@RequestBody nameProduct : String, idCategory : String): String? {
         val products = Products()
@@ -55,6 +69,25 @@ class ProductService {
             })
         }
         return gson.toJson(products)
+    }
+
+    @PostMapping("/api/update/product")
+    fun updateProduct(@RequestBody request : String): ProductEntity? {
+        val product: Product = gson.fromJson(request, object : TypeToken<Product>() {}.type)
+        val productEntity = productRepository.findById(product.id!!).get()
+
+        productEntity.name = product.name
+        productEntity.category = categoryRepository.findById(product.category!!).get()
+        productEntity.description = product.description
+        productEntity.count = product.count
+
+        return productRepository.save(productEntity)
+    }
+
+    @GetMapping("/api/remove/product")
+    fun removeProduct(id : Int): Unit? {
+        val productEntity = productRepository.findById(id).get()
+        return productRepository.delete(productEntity)
     }
 
 }
