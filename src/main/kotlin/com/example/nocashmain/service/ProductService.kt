@@ -51,7 +51,7 @@ class ProductService {
         return productRepository.save(productEntity)
     }
 
-    @PostMapping("/api/product")
+    @GetMapping("/api/product")
     fun getProduct(@RequestBody nameProduct : String, idCategory : String): String? {
         val products = Products()
         products.list = mutableListOf()
