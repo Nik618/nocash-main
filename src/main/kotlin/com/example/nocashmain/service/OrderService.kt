@@ -63,7 +63,9 @@ class OrderService {
 
             orderItemsRepository.save(orderItemsEntity)
         }
+
         orderEntity.idTransaction?.value = price
+        transactionRepository.save(orderEntity.idTransaction!!)
         return orderRepository.save(orderEntity)
     }
 
