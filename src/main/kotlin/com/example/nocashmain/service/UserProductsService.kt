@@ -25,7 +25,6 @@ class UserProductsService {
 
     @Autowired
     lateinit var userRepository: UserRepository
-
     private var gson = Gson()
 
     @GetMapping("/api/userproducts")
