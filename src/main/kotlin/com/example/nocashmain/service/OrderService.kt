@@ -77,12 +77,21 @@ class OrderService {
     }
 
     @GetMapping("/api/order")
-    fun getOrder(userIdFrom : Int, userIdTo : Int): String? {
+    fun getOrder(userIdFrom : String, userIdTo : String): String? {
         val orders = Orders()
         orders.list = mutableListOf()
 
         val orderEntities : MutableList<OrderEntity> = mutableListOf()
-        val transactionEntities = transactionRepository.findAllByIdUserFromOrIdUserTo(userRepository.findById(userIdFrom).get(), userRepository.findById(userIdTo).get())
+
+        var transactionEntities : List<TransactionEntity?> = listOf()
+        transactionEntities = if (userIdFrom == "") {
+            transactionRepository.findAllByIdUserTo(
+                userRepository.findById(userIdTo.toInt()).get()
+            )
+        } else
+            transactionRepository.findAllByIdUserFrom(
+                userRepository.findById(userIdFrom.toInt()).get()
+            )
         transactionEntities.forEach() {
             orderEntities.add(orderRepository.findByIdTransaction(it!!).get(0)!!)
         }

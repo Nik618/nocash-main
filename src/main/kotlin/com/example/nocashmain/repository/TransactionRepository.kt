@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface TransactionRepository : CrudRepository<TransactionEntity, Int> {
     fun findAllByIdUserFromOrIdUserTo(idUserFrom: UserEntity, idUserTo: UserEntity): List<TransactionEntity?>
+    fun findAllByIdUserFrom(idUserFrom: UserEntity): List<TransactionEntity?>
+    fun findAllByIdUserTo(idUserTo: UserEntity): List<TransactionEntity?>
 }
