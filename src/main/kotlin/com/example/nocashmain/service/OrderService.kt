@@ -59,13 +59,13 @@ class OrderService {
                 idProduct = it?.idProduct
                 count = it?.count
                 price += count?.times(idProduct?.price!!)!!
+                println(price)
             }
 
             orderItemsRepository.save(orderItemsEntity)
         }
 
         orderEntity.idTransaction?.value = price
-        println(price)
         transactionRepository.save(orderEntity.idTransaction!!)
         return orderRepository.save(orderEntity)
     }
