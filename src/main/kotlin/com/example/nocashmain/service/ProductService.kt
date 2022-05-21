@@ -49,13 +49,15 @@ class ProductService {
     }
 
     @GetMapping("/api/product")
-    fun getProduct(@RequestParam nameProduct : String, @RequestParam idCategory : String): String? {
+    fun getProduct(nameProduct : String, idCategory : String): String? {
         val products = Products()
         products.list = mutableListOf()
         val productEntities : List<ProductEntity?> = if ((nameProduct == "" && idCategory == "")) {
             productRepository.findAll()
-        } else
+        } else if ((nameProduct == "" || idCategory == "") && !(nameProduct != "" && idCategory != "")) {
             productRepository.findAllByNameOrCategory(nameProduct, categoryRepository.findById(idCategory.toInt()).get())
+        } else
+            productRepository.findAllByNameAndCategory(nameProduct, categoryRepository.findById(idCategory.toInt()).get())
 
         productEntities.forEach() {
             products.list.add(Product().apply {

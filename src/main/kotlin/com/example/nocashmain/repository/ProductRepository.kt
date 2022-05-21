@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ProductRepository : CrudRepository<ProductEntity, Int> {
     fun findAllByNameOrCategory(name: String, idCategory : CategoryEntity): List<ProductEntity?>
+    fun findAllByNameAndCategory(name: String, idCategory : CategoryEntity): List<ProductEntity?>
     override fun findAll(): List<ProductEntity?>
 }
