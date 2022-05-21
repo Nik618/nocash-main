@@ -77,19 +77,26 @@ class OrderService {
     }
 
     @GetMapping("/api/order")
-    fun getOrder(): String? {
+    fun getOrder(userIdFrom : Int, userIdTo : Int): String? {
         val orders = Orders()
         orders.list = mutableListOf()
-        val orderEntities = orderRepository.findAll()
+
+        val orderEntities : MutableList<OrderEntity> = mutableListOf()
+        val transactionEntities = transactionRepository.findAllByIdUserFromOrIdUserTo(userRepository.findById(userIdFrom).get(), userRepository.findById(userIdTo).get())
+        transactionEntities.forEach() {
+            orderEntities.add(orderRepository.findByIdTransaction(it!!).get(0)!!)
+        }
+
+        //val orderEntities = orderRepository.findAll()
         orderEntities.forEach() {
             orders.list.add(Order().apply {
-                id = it?.id
-                date = it?.date
-                idTransaction = it?.idTransaction?.id
-                status = it?.status
-                comment = it?.comment
-                cancelComment = it?.cancelComment
-                paymentId = it?.paymentId
+                id = it.id
+                date = it.date
+                idTransaction = it.idTransaction?.id
+                status = it.status
+                comment = it.comment
+                cancelComment = it.cancelComment
+                paymentId = it.paymentId
             })
         }
         return gson.toJson(orders)
