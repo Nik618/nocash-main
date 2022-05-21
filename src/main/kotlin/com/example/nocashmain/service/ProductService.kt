@@ -4,9 +4,8 @@ import com.example.nocashmain.dto.*
 import com.example.nocashmain.entity.CategoryEntity
 import com.example.nocashmain.entity.OrderEntity
 import com.example.nocashmain.entity.ProductEntity
-import com.example.nocashmain.repository.CategoryRepository
-import com.example.nocashmain.repository.OrderRepository
-import com.example.nocashmain.repository.ProductRepository
+import com.example.nocashmain.entity.UserProductsEntity
+import com.example.nocashmain.repository.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.html.I
@@ -30,6 +29,12 @@ class ProductService {
     @Autowired
     lateinit var categoryRepository: CategoryRepository
 
+    @Autowired
+    lateinit var userProductsRepository: UserProductsRepository
+
+    @Autowired
+    lateinit var userRepository: UserRepository
+
     private var gson = Gson()
 
     @PostMapping("/api/create/product")
@@ -43,6 +48,11 @@ class ProductService {
             count = product.count
             price = product.price
         }
+
+        userProductsRepository.save(UserProductsEntity().apply {
+            idUser = userRepository.findById(product.userId!!).get()
+            idProduct = productEntity
+        })
 
         return productRepository.save(productEntity)
     }

@@ -10,5 +10,6 @@ data class ProductIn (
     var category: Int? = null,
     var description: String? = null,
     var count: Int? = null,
-    var price: Int? = null
+    var price: Int? = null,
+    var userId: Int? = null
 )
