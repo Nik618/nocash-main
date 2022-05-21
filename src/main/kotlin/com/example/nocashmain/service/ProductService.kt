@@ -47,6 +47,7 @@ class ProductService {
             description = product.description
             count = product.count
             price = product.price
+
         }
 
         productRepository.save(productEntity)

@@ -7,6 +7,6 @@ import org.simpleframework.xml.Root
 class UserProductsList {
 
     @field:ElementList(entry = "UserProducts", inline = true)
-    lateinit var list: MutableList<UserProducts>
+    lateinit var list: MutableList<UserProductsOut>
 
 }

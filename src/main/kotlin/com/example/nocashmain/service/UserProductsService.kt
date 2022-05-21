@@ -34,12 +34,62 @@ class UserProductsService {
         userProductsList.list = mutableListOf()
         val userProductsEntities = userProductsRepository.findAllByIdUser(userRepository.findById(userId).get())
         userProductsEntities.forEach() {
-            userProductsList.list.add(UserProducts().apply {
-                    id = it?.id
-                    idUser = it?.idUser!!.id!!
-                    idProduct = it.idProduct!!.id!!
+            userProductsList.list.add(UserProductsOut().apply {
+                id = it?.id
+                idUser = User().apply {
+                    id = it?.idUser!!.id
+                    name = it.idUser!!.name
+                    lat = it.idUser!!.lat
+                    lon = it.idUser!!.lon
+                    phone = it.idUser!!.phone
+                    role = it.idUser!!.role
+                    login = it.idUser!!.login
+                    password = it.idUser!!.password
+                    balance = it.idUser!!.balance
                 }
-            )
+                idProduct = Product().apply {
+                    id = it?.idProduct?.id
+                    name = it?.idProduct?.name
+                    category = Category().apply {
+                        id = it?.idProduct?.category?.id
+                        name = it?.idProduct?.category?.name
+                    }
+                    description = it?.idProduct?.description
+                }
+            })
+        }
+        return gson.toJson(userProductsList)
+    }
+
+    @GetMapping("/api/userproducts")
+    fun getUserProductsWithoutUserId(): String? {
+        val userProductsList = UserProductsList()
+        userProductsList.list = mutableListOf()
+        val userProductsEntities = userProductsRepository.findAll()
+        userProductsEntities.forEach() {
+            userProductsList.list.add(UserProductsOut().apply {
+                id = it?.id
+                idUser = User().apply {
+                    id = it?.idUser!!.id
+                    name = it.idUser!!.name
+                    lat = it.idUser!!.lat
+                    lon = it.idUser!!.lon
+                    phone = it.idUser!!.phone
+                    role = it.idUser!!.role
+                    login = it.idUser!!.login
+                    password = it.idUser!!.password
+                    balance = it.idUser!!.balance
+                }
+                idProduct = Product().apply {
+                    id = it?.idProduct?.id
+                    name = it?.idProduct?.name
+                    category = Category().apply {
+                        id = it?.idProduct?.category?.id
+                        name = it?.idProduct?.category?.name
+                    }
+                    description = it?.idProduct?.description
+                }
+            })
         }
         return gson.toJson(userProductsList)
     }
