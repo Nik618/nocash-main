@@ -18,7 +18,7 @@ import java.util.*
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
-
+@CrossOrigin(origins = ["/**"], maxAge = 3600)
 @RestController
 class OrderService {
 
@@ -33,6 +33,9 @@ class OrderService {
 
     @Autowired
     lateinit var transactionRepository: TransactionRepository
+
+    @Autowired
+    lateinit var userRepository: UserRepository
 
     private var gson = Gson()
 
@@ -97,25 +100,6 @@ class OrderService {
         val order: Order = gson.fromJson(request, object : TypeToken<Order>() {}.type)
         val orderEntity = orderRepository.findById(order.id!!).get()
 
-        if (order.status == "cancel") {
-            val transactionEntity = TransactionEntity().apply {
-                date = Date()
-                idUserTo = orderEntity.idTransaction?.idUserTo
-                idUserFrom = orderEntity.idTransaction?.idUserFrom
-                value = -orderEntity.idTransaction?.value!!
-            }
-            transactionRepository.save(transactionEntity)
-
-            orderEntity.date = Date()
-            orderEntity.idTransaction = transactionEntity
-            orderEntity.status = order.status
-            orderEntity.comment = order.comment
-            orderEntity.cancelComment = order.cancelComment
-            orderEntity.paymentId = order.paymentId
-
-            return orderRepository.save(orderEntity)
-        }
-
         orderEntity.date = Date()
         orderEntity.idTransaction = transactionRepository.findById(order.idTransaction!!).get()
         orderEntity.status = order.status
@@ -130,6 +114,27 @@ class OrderService {
     fun updateOrderStatus(@RequestBody request : String): OrderEntity? {
         val status: Status = gson.fromJson(request, object : TypeToken<Order>() {}.type)
         val orderEntity = orderRepository.findById(status.id!!).get()
+
+        if (status.status == "cancel") {
+            val transactionEntity = TransactionEntity().apply {
+                date = Date()
+                idUserTo = orderEntity.idTransaction?.idUserTo
+                idUserFrom = orderEntity.idTransaction?.idUserFrom
+                value = -orderEntity.idTransaction?.value!!
+            }
+
+            val userEntity = userRepository.findById(transactionEntity.idUserFrom?.id!!).get()
+            userEntity.balance = userEntity.balance?.minus(transactionEntity.value!!)
+            userRepository.save(userEntity)
+
+            transactionRepository.save(transactionEntity)
+
+            orderEntity.date = Date()
+            orderEntity.idTransaction = transactionEntity
+            orderEntity.status = status.status
+
+            return orderRepository.save(orderEntity)
+        }
 
         orderEntity.status = status.status
 
