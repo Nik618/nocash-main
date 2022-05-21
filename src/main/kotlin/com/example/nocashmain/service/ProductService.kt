@@ -41,7 +41,7 @@ class ProductService {
     fun getProduct(@RequestBody nameProduct : String, idCategory : String): String? {
         val products = Products()
         products.list = mutableListOf()
-        val productEntities : List<ProductEntity?> = if ((!nameProduct.equals(null) || !idCategory.equals(""))) {
+        val productEntities : List<ProductEntity?> = if ((nameProduct != "" || idCategory != "")) {
             productRepository.findAllByNameOrCategory(nameProduct, categoryRepository.findById(idCategory.toInt()).get())
         } else
             productRepository.findAll()
