@@ -1,9 +1,6 @@
 package com.example.nocashmain.service
 
-import com.example.nocashmain.dto.Order
-import com.example.nocashmain.dto.Orders
-import com.example.nocashmain.dto.Product
-import com.example.nocashmain.dto.Products
+import com.example.nocashmain.dto.*
 import com.example.nocashmain.entity.CategoryEntity
 import com.example.nocashmain.entity.OrderEntity
 import com.example.nocashmain.entity.ProductEntity
@@ -41,9 +38,10 @@ class ProductService {
 
         val productEntity = ProductEntity().apply {
             name = product.name
-            category = categoryRepository.findById(product.category!!).get()
+            category = categoryRepository.findById(product.category!!.id!!).get()
             description = product.description
             count = product.count
+            price = product.price
         }
 
         return productRepository.save(productEntity)
@@ -64,9 +62,13 @@ class ProductService {
             products.list.add(Product().apply {
                 id = it?.id
                 name = it?.name
-                category = it?.category?.id
+                category = Category().apply {
+                    id = it?.category?.id
+                    name = it?.category?.name
+                }
                 description = it?.description
                 count = it?.count
+                price = it?.price
             })
         }
         return gson.toJson(products)
@@ -78,7 +80,7 @@ class ProductService {
         val productEntity = productRepository.findById(product.id!!).get()
 
         productEntity.name = product.name
-        productEntity.category = categoryRepository.findById(product.category!!).get()
+        productEntity.category = categoryRepository.findById(product.category!!.id!!).get()
         productEntity.description = product.description
         productEntity.count = product.count
 
