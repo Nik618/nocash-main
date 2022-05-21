@@ -13,10 +13,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.html.I
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
 import java.security.spec.InvalidKeySpecException
@@ -81,7 +78,7 @@ class CartItemsService {
     }
 
     @GetMapping("/api/remove/cartItems")
-    fun removeOrder(id : Int): Unit? {
+    fun removeOrder(@RequestParam id : Int): Unit? {
         val cartItemsEntity = cartItemsRepository.findById(id).get()
         return cartItemsRepository.delete(cartItemsEntity)
     }

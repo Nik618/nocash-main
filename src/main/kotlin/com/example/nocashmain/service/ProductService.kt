@@ -14,10 +14,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.html.I
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
 import java.security.spec.InvalidKeySpecException
@@ -52,7 +49,7 @@ class ProductService {
     }
 
     @GetMapping("/api/product")
-    fun getProduct(@RequestBody nameProduct : String, idCategory : String): String? {
+    fun getProduct(@RequestParam nameProduct : String, @RequestParam idCategory : String): String? {
         val products = Products()
         products.list = mutableListOf()
         val productEntities : List<ProductEntity?> = if ((nameProduct == "" && idCategory == "")) {
@@ -86,7 +83,7 @@ class ProductService {
     }
 
     @GetMapping("/api/remove/product")
-    fun removeProduct(id : Int): Unit? {
+    fun removeProduct(@RequestParam id : Int): Unit? {
         val productEntity = productRepository.findById(id).get()
         return productRepository.delete(productEntity)
     }

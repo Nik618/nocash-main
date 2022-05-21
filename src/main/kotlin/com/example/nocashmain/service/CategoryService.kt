@@ -10,10 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.html.I
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
 import java.security.spec.InvalidKeySpecException
@@ -32,7 +29,7 @@ class CategoryService {
     private var gson = Gson()
 
     @GetMapping("/api/category")
-    fun getProduct(@RequestBody nameProduct : String, idCategory : CategoryEntity): String? {
+    fun getProduct(@RequestParam nameProduct : String, @RequestParam idCategory : CategoryEntity): String? {
         val categories = Categories()
         categories.list = mutableListOf()
         val categoryEntities = categoryRepository.findAll()
