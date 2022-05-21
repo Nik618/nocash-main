@@ -33,6 +33,9 @@ class ProductEntity {
     @Column(name = "count", nullable = false)
     var count: Int? = null
 
+    @Column(name = "price", nullable = false)
+    var price: Int? = null
+
     @OneToOne(cascade = [(CascadeType.MERGE)])
     @JoinColumn(name = "category", referencedColumnName = "id")
     var category: CategoryEntity? = null

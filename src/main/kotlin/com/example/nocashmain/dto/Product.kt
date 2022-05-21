@@ -9,5 +9,6 @@ data class Product (
     var name: String? = null,
     var category: Int? = null,
     var description: String? = null,
-    var count: Int? = null
+    var count: Int? = null,
+    var price: Int? = null
 )

@@ -47,14 +47,23 @@ class OrderService {
             paymentId = order.paymentId
         }
 
-        val cartItemsEntity = cartItemsRepository.findByIdUser(transactionRepository.findById(order.idTransaction!!).get().idUserFrom?.id!!).get(0)
-        val orderItemsEntity = OrderItemsEntity().apply {
-            idOrder = orderEntity
-            idProduct = cartItemsEntity?.idProduct
-            count = cartItemsEntity?.count
-        }
-        orderItemsRepository.save(orderItemsEntity)
+        //val cartItemsEntity = cartItemsRepository.findByIdUser(transactionRepository.findById(order.idTransaction!!).get().idUserFrom?.id!!).get(0)
 
+        val cartItemsEntities = cartItemsRepository.findAllByIdUser(transactionRepository.findById(order.idTransaction!!).get().id!!)
+
+        var price = 0.0
+
+        cartItemsEntities.forEach() {
+            val orderItemsEntity = OrderItemsEntity().apply {
+                idOrder = orderEntity
+                idProduct = it?.idProduct
+                count = it?.count
+                price += count?.times(idProduct?.price!!)!!
+            }
+
+            orderItemsRepository.save(orderItemsEntity)
+        }
+        orderEntity.idTransaction?.value = price
         return orderRepository.save(orderEntity)
     }
 

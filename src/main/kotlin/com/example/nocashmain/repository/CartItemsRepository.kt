@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CartItemsRepository : CrudRepository<CartItemsEntity, Int> {
     fun findByIdUser(id : Int): List<CartItemsEntity?>
-
+    fun findAllByIdUser(id : Int): List<CartItemsEntity?>
 }
