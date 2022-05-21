@@ -7,8 +7,8 @@ import java.util.*
 data class Transaction (
     var id: Int? = null,
     var date: Date? = null,
-    var idUserTo: UserEntity? = null,
-    var idUserFrom: UserEntity? = null,
-    var idProduct: ProductEntity? = null,
+    var idUserTo: Int? = null,
+    var idUserFrom: Int? = null,
+    var idProduct: Int? = null,
     var value: Double? = null
 )

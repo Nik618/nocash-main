@@ -3,10 +3,7 @@ package com.example.nocashmain.service
 import com.example.nocashmain.dto.Order
 import com.example.nocashmain.dto.Orders
 import com.example.nocashmain.entity.*
-import com.example.nocashmain.repository.CartItemsRepository
-import com.example.nocashmain.repository.OrderItemsRepository
-import com.example.nocashmain.repository.OrderRepository
-import com.example.nocashmain.repository.UserRepository
+import com.example.nocashmain.repository.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.html.I
@@ -36,6 +33,9 @@ class OrderService {
     @Autowired
     lateinit var cartItemsRepository: CartItemsRepository
 
+    @Autowired
+    lateinit var transactionRepository: TransactionRepository
+
     private var gson = Gson()
 
     @PostMapping("/api/create/order")
@@ -43,14 +43,14 @@ class OrderService {
         val order: Order = gson.fromJson(request, object : TypeToken<Order>() {}.type)
         val orderEntity = OrderEntity().apply {
             date = Date()
-            idTransaction = order.idTransaction
+            idTransaction = transactionRepository.findById(order.idTransaction!!).get()
             status = order.status
             comment = order.comment
             cancelComment = order.cancelComment
             paymentId = order.paymentId
         }
 
-        val cartItemsEntity = cartItemsRepository.findByIdUser(order.idTransaction?.idUserFrom?.id!!).get(0)
+        val cartItemsEntity = cartItemsRepository.findByIdUser(transactionRepository.findById(order.idTransaction!!).get().idUserFrom?.id!!).get(0)
         val orderItemsEntity = OrderItemsEntity().apply {
             idOrder = orderEntity
             idProduct = cartItemsEntity?.idProduct
@@ -62,7 +62,7 @@ class OrderService {
     }
 
     @GetMapping("/api/order")
-    fun getOrder(@RequestBody name : String, idCategory : CategoryEntity): String? {
+    fun getOrder(): String? {
         val orders = Orders()
         orders.list = mutableListOf()
         val orderEntities = orderRepository.findAll()
@@ -70,7 +70,7 @@ class OrderService {
             orders.list.add(Order().apply {
                 id = it?.id
                 date = it?.date
-                idTransaction = it?.idTransaction
+                idTransaction = it?.idTransaction?.id
                 status = it?.status
                 comment = it?.comment
                 cancelComment = it?.cancelComment
@@ -86,7 +86,7 @@ class OrderService {
         val orderEntity = orderRepository.findById(order.id!!).get()
 
         orderEntity.date = Date()
-        orderEntity.idTransaction = order.idTransaction
+        orderEntity.idTransaction = transactionRepository.findById(order.idTransaction!!).get()
         orderEntity.status = order.status
         orderEntity.comment = order.comment
         orderEntity.cancelComment = order.cancelComment

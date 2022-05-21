@@ -7,7 +7,7 @@ import java.util.*
 data class Product (
     var id: Int? = null,
     var name: String? = null,
-    var category: CategoryEntity? = null,
+    var category: Int? = null,
     var description: String? = null,
     var count: Int? = null
 )

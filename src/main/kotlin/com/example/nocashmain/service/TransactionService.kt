@@ -3,6 +3,7 @@ package com.example.nocashmain.service
 import com.example.nocashmain.dto.*
 import com.example.nocashmain.entity.OrderEntity
 import com.example.nocashmain.entity.TransactionEntity
+import com.example.nocashmain.repository.ProductRepository
 import com.example.nocashmain.repository.TransactionRepository
 import com.example.nocashmain.repository.UserRepository
 import com.google.gson.Gson
@@ -21,6 +22,9 @@ class TransactionService {
     lateinit var transactionRepository: TransactionRepository
 
     @Autowired
+    lateinit var productRepository: ProductRepository
+
+    @Autowired
     lateinit var userRepository: UserRepository
 
     private var gson = Gson()
@@ -30,13 +34,13 @@ class TransactionService {
         val transaction: Transaction = gson.fromJson(request, object : TypeToken<Order>() {}.type)
         val transactionEntity = TransactionEntity().apply {
             date = Date()
-            idUserTo = transaction.idUserTo
-            idUserFrom = transaction.idUserFrom
-            idProduct = transaction.idProduct
+            idUserTo = userRepository.findById(transaction.idUserTo!!).get()
+            idUserFrom = userRepository.findById(transaction.idUserFrom!!).get()
+            idProduct = productRepository.findById(transaction.idProduct!!).get()
             value = transaction.value
         }
 
-        val userEntity = userRepository.findById(transaction.idUserFrom?.id!!).get()
+        val userEntity = userRepository.findById(transaction.idUserFrom!!).get()
         userEntity.balance = userEntity.balance?.minus(transaction.value!!)
         userRepository.save(userEntity)
 
@@ -52,9 +56,9 @@ class TransactionService {
             transactions.list.add(Transaction().apply {
                 id = it?.id
                 date = it?.date
-                idUserTo = it?.idUserTo
-                idUserFrom = it?.idUserFrom
-                idProduct = it?.idProduct
+                idUserTo = it?.idUserTo?.id
+                idUserFrom = it?.idUserFrom?.id
+                idProduct = it?.idProduct?.id
                 value = it?.value
             })
         }

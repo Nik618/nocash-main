@@ -7,7 +7,7 @@ import java.util.*
 data class Order (
     var id: Int? = null,
     var date: Date? = null,
-    var idTransaction: TransactionEntity? = null,
+    var idTransaction: Int? = null,
     var status: String? = null,
     var comment: String? = null,
     var cancelComment: String? = null,

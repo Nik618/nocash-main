@@ -7,6 +7,7 @@ import com.example.nocashmain.dto.Orders
 import com.example.nocashmain.entity.*
 import com.example.nocashmain.repository.CartItemsRepository
 import com.example.nocashmain.repository.OrderRepository
+import com.example.nocashmain.repository.ProductRepository
 import com.example.nocashmain.repository.UserRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -31,14 +32,20 @@ class CartItemsService {
     @Autowired
     lateinit var cartItemsRepository: CartItemsRepository
 
+    @Autowired
+    lateinit var userRepository: UserRepository
+
+    @Autowired
+    lateinit var productRepository: ProductRepository
+
     private var gson = Gson()
 
     @PostMapping("/api/create/cartitems")
     fun createOrder(@RequestBody request : String): CartItemsEntity? {
         val cartItems: CartItems = gson.fromJson(request, object : TypeToken<CartItems>() {}.type)
         val cartItemsEntity = CartItemsEntity().apply {
-            idUser = cartItems.idUser
-            idProduct = cartItems.idProduct
+            idUser = userRepository.findById(cartItems.idUser!!).get()
+            idProduct = productRepository.findById(cartItems.idProduct!!).get()
             count = cartItems.count
         }
 
@@ -46,15 +53,15 @@ class CartItemsService {
     }
 
     @GetMapping("/api/cartitems")
-    fun getOrder(@RequestBody name : String, idCategory : CategoryEntity): String? {
+    fun getOrder(): String? {
         val cartItemsList = CartItemsList()
         cartItemsList.list = mutableListOf()
         val cartItemsEntities = cartItemsRepository.findAll()
         cartItemsEntities.forEach() {
             cartItemsList.list.add(CartItems().apply {
                 id = it?.id
-                idUser = it?.idUser
-                idProduct = it?.idProduct
+                idUser = it?.idUser?.id
+                idProduct = it?.idProduct?.id
                 count = it?.count
             })
         }
@@ -66,8 +73,8 @@ class CartItemsService {
         val cartItems: CartItems = gson.fromJson(request, object : TypeToken<Order>() {}.type)
         val cartItemsEntity = cartItemsRepository.findById(cartItems.id!!).get()
 
-        cartItemsEntity.idUser = cartItems.idUser
-        cartItemsEntity.idProduct = cartItems.idProduct
+        cartItemsEntity.idUser = userRepository.findById(cartItems.idUser!!).get()
+        cartItemsEntity.idProduct = productRepository.findById(cartItems.idProduct!!).get()
         cartItemsEntity.count = cartItems.count
 
         return cartItemsRepository.save(cartItemsEntity)
