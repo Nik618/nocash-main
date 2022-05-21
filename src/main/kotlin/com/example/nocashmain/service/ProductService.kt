@@ -34,11 +34,11 @@ class ProductService {
 
     @PostMapping("/api/create/product")
     fun createProduct(@RequestBody request : String): ProductEntity? {
-        val product: Product = gson.fromJson(request, object : TypeToken<Product>() {}.type)
+        val product: ProductIn = gson.fromJson(request, object : TypeToken<ProductIn>() {}.type)
 
         val productEntity = ProductEntity().apply {
             name = product.name
-            category = categoryRepository.findById(product.category!!.id!!).get()
+            category = categoryRepository.findById(product.category!!).get()
             description = product.description
             count = product.count
             price = product.price
@@ -76,11 +76,11 @@ class ProductService {
 
     @PostMapping("/api/update/product")
     fun updateProduct(request : String): ProductEntity? {
-        val product: Product = gson.fromJson(request, object : TypeToken<Product>() {}.type)
+        val product: ProductIn = gson.fromJson(request, object : TypeToken<ProductIn>() {}.type)
         val productEntity = productRepository.findById(product.id!!).get()
 
         productEntity.name = product.name
-        productEntity.category = categoryRepository.findById(product.category!!.id!!).get()
+        productEntity.category = categoryRepository.findById(product.category!!).get()
         productEntity.description = product.description
         productEntity.count = product.count
 

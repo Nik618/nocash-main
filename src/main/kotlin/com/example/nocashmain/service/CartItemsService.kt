@@ -36,10 +36,10 @@ class CartItemsService {
 
     @PostMapping("/api/create/cartitems")
     fun createOrder(@RequestBody request : String): CartItemsEntity? {
-        val cartItems: CartItems = gson.fromJson(request, object : TypeToken<CartItems>() {}.type)
+        val cartItems: CartItemsIn = gson.fromJson(request, object : TypeToken<CartItemsIn>() {}.type)
         val cartItemsEntity = CartItemsEntity().apply {
             idUser = userRepository.findById(cartItems.idUser!!).get()
-            idProduct = productRepository.findById(cartItems.idProduct!!.id!!).get()
+            idProduct = productRepository.findById(cartItems.idProduct!!).get()
             count = cartItems.count
         }
 
@@ -74,11 +74,11 @@ class CartItemsService {
 
     @PostMapping("/api/update/cartitems")
     fun updateOrder(@RequestBody request : String): CartItemsEntity? {
-        val cartItems: CartItems = gson.fromJson(request, object : TypeToken<CartItems>() {}.type)
+        val cartItems: CartItemsIn = gson.fromJson(request, object : TypeToken<CartItemsIn>() {}.type)
         val cartItemsEntity = cartItemsRepository.findById(cartItems.id!!).get()
 
         cartItemsEntity.idUser = userRepository.findById(cartItems.idUser!!).get()
-        cartItemsEntity.idProduct = productRepository.findById(cartItems.idProduct!!.id!!).get()
+        cartItemsEntity.idProduct = productRepository.findById(cartItems.idProduct!!).get()
         cartItemsEntity.count = cartItems.count
 
         return cartItemsRepository.save(cartItemsEntity)
