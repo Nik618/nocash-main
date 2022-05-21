@@ -90,12 +90,4 @@ class OrderService {
         return orderRepository.delete(orderEntity)
     }
 
-//    @GetMapping("/api/create/order")
-//    fun createOrder(): OrderEntity {
-//        return orderRepository.save(OrderEntity().apply {
-//            date = Date()
-//        })
-//    }
-
-
 }

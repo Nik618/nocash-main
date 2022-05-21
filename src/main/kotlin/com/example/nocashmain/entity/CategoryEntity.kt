@@ -15,7 +15,7 @@ class CategoryEntity {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    var id: Long? = null
+    var id: Int? = null
 
     @Column(name = "name", nullable = false)
     var name: String? = null
