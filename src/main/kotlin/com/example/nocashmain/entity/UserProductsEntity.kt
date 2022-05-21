@@ -9,7 +9,7 @@ import javax.persistence.*
 
 
 @Entity
-@Table(name="order_items_table")
+@Table(name="user_products_table")
 open class UserProductsEntity {
 
     constructor(_idUser : UserEntity, _idProduct : ProductEntity): this() {
@@ -22,7 +22,7 @@ open class UserProductsEntity {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    open var id: Long? = null
+    open var id: Int? = null
 
     @OneToOne(cascade = [(CascadeType.MERGE)])
     @JoinColumn(name = "id_user", referencedColumnName = "id")

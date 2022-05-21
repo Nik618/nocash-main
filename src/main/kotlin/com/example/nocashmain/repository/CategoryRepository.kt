@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface CategoryRepository : CrudRepository<CategoryEntity, Int> {
-    }
+
+}

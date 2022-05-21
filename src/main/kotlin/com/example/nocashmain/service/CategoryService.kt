@@ -31,7 +31,7 @@ class CategoryService {
 
     private var gson = Gson()
 
-    @GetMapping("/api/order")
+    @GetMapping("/api/category")
     fun getProduct(@RequestBody nameProduct : String, idCategory : CategoryEntity): String? {
         val categories = Categories()
         categories.list = mutableListOf()

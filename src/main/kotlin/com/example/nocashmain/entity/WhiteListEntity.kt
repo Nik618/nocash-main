@@ -8,8 +8,8 @@ import javax.persistence.*
 
 
 @Entity
-@Table(name="black_list_table")
-open class BlackListEntity {
+@Table(name="white_list_table")
+open class WhiteListEntity {
 
     constructor(_idUser : UserEntity, _dateAcc : Date, _accessToken : String, _dateRef : Date, _refreshToken : String): this() {
         this.idUser = _idUser
@@ -24,7 +24,7 @@ open class BlackListEntity {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    open var id: Long? = null
+    open var id: Int? = null
 
     @OneToOne(cascade = [(CascadeType.MERGE)])
     @JoinColumn(name = "id_user", referencedColumnName = "id")

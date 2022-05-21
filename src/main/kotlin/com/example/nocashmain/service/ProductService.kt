@@ -6,6 +6,7 @@ import com.example.nocashmain.dto.Product
 import com.example.nocashmain.dto.Products
 import com.example.nocashmain.entity.CategoryEntity
 import com.example.nocashmain.entity.OrderEntity
+import com.example.nocashmain.entity.ProductEntity
 import com.example.nocashmain.repository.OrderRepository
 import com.example.nocashmain.repository.ProductRepository
 import com.google.gson.Gson
@@ -33,20 +34,24 @@ class ProductService {
 
     private var gson = Gson()
 
-    @GetMapping("/api/order")
+    @GetMapping("/api/product")
     fun getProduct(@RequestBody nameProduct : String, idCategory : CategoryEntity): String? {
         val products = Products()
         products.list = mutableListOf()
-        val productEntities = productRepository.findAllByNameAndCategory(nameProduct, idCategory)
+        val productEntities : List<ProductEntity?> = if ((!nameProduct.equals(null) || !idCategory.equals(null))) {
+            productRepository.findAllByNameOrCategory(nameProduct, idCategory)
+        } else
+            productRepository.findAll()
         productEntities.forEach() {
             products.list.add(Product().apply {
                 id = it?.id
                 name = it?.name
                 category = it?.category
-                description  = it?.description
+                description = it?.description
                 count = it?.count
             })
         }
         return gson.toJson(products)
     }
+
 }

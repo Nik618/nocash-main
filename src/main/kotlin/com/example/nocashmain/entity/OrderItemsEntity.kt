@@ -12,9 +12,10 @@ import javax.persistence.*
 @Table(name="order_items_table")
 open class OrderItemsEntity {
 
-    constructor(_idOrder : OrderEntity, _idProduct : ProductEntity): this() {
+    constructor(_idOrder : OrderEntity, _idProduct : ProductEntity, _count : Int): this() {
         this.idOrder = _idOrder
         this.idProduct = _idProduct
+        this.count = _count
     }
 
     constructor()
@@ -22,7 +23,7 @@ open class OrderItemsEntity {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    open var id: Long? = null
+    open var id: Int? = null
 
     @OneToOne(cascade = [(CascadeType.MERGE)])
     @JoinColumn(name = "id_order", referencedColumnName = "id")
@@ -31,5 +32,8 @@ open class OrderItemsEntity {
     @OneToOne(cascade = [(CascadeType.MERGE)])
     @JoinColumn(name = "id_product", referencedColumnName = "id")
     open var idProduct: ProductEntity? = null
+
+    @Column(name = "count", nullable = false)
+    open var count: Int? = null
 
 }

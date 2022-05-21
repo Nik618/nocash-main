@@ -9,20 +9,20 @@ class UserEntity {
     constructor(_name : String,
                 _lat : Double,
                 _lon : Double,
-                _phone : Int,
+                _phone : String,
                 _role : String,
-                _payId : String,
                 _login : String,
-                _password : String
+                _password : String,
+                _balance : Double
     ): this() {
         this.name = _name
         this.lat = _lat
         this.lon = _lon
         this.phone = _phone
         this.role = _role
-        this.payId = _payId
         this.login = _login
         this.password = _password
+        this.balance = _balance
     }
 
     constructor()
@@ -30,7 +30,7 @@ class UserEntity {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    var id: Long? = null
+    var id: Int? = null
 
     @Column(name = "name", nullable = false)
     var name: String? = null
@@ -42,18 +42,18 @@ class UserEntity {
     var lon: Double? = null
 
     @Column(name = "phone", nullable = false)
-    var phone: Int? = null
+    var phone: String? = null
 
     @Column(name = "role", nullable = false)
     var role: String? = null
-
-    @Column(name = "pay_id", nullable = false)
-    var payId: String? = null
 
     @Column(name = "login", nullable = false)
     var login: String? = null
 
     @Column(name = "password", nullable = false)
     var password: String? = null
+
+    @Column(name = "balance", nullable = false)
+    var balance: Double? = null
 
 }

@@ -7,11 +7,9 @@ import javax.persistence.*
 @Table(name="order_table")
 class OrderEntity {
 
-    constructor(_date : Date, _idUserTo : UserEntity, _idUserFrom: UserEntity, _price : Double, _status : String, _comment : String, _cancelComment : String, _paymentId : String): this() {
+    constructor(_date : Date, _idTransaction : TransactionEntity, _status : String, _comment : String, _cancelComment : String, _paymentId : String): this() {
         this.date = _date
-        this.idUserTo = _idUserTo
-        this.idUserFrom = _idUserFrom
-        this.price = _price
+        this.idTransaction = _idTransaction
         this.status = _status
         this.comment = _comment
         this.cancelComment = _cancelComment
@@ -29,15 +27,8 @@ class OrderEntity {
     var date: Date? = null
 
     @OneToOne(cascade = [(CascadeType.MERGE)])
-    @JoinColumn(name = "id_user_to", referencedColumnName = "id")
-    var idUserTo: UserEntity? = null
-
-    @OneToOne(cascade = [(CascadeType.MERGE)])
-    @JoinColumn(name = "id_user_from", referencedColumnName = "id")
-    var idUserFrom: UserEntity? = null
-
-    @Column(name = "price", nullable = false)
-    var price: Double? = null
+    @JoinColumn(name = "id_transaction", referencedColumnName = "id")
+    var idTransaction: TransactionEntity? = null
 
     @Column(name = "status", nullable = false)
     var status: String? = null
