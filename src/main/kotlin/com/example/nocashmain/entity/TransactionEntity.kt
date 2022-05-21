@@ -7,11 +7,10 @@ import javax.persistence.*
 @Table(name="transaction_table")
 class TransactionEntity {
 
-    constructor(_date : Date, _idUserTo : UserEntity, _idUserFrom: UserEntity, _idProduct : ProductEntity, _value : Double): this() {
+    constructor(_date : Date, _idUserTo : UserEntity, _idUserFrom: UserEntity, _value : Double): this() {
         this.date = _date
         this.idUserTo = _idUserTo
         this.idUserFrom = _idUserFrom
-        this.idProduct = _idProduct
         this.value = _value
     }
 
@@ -32,10 +31,6 @@ class TransactionEntity {
     @OneToOne(cascade = [(CascadeType.MERGE)])
     @JoinColumn(name = "id_user_from", referencedColumnName = "id")
     var idUserFrom: UserEntity? = null
-
-    @OneToOne(cascade = [(CascadeType.MERGE)])
-    @JoinColumn(name = "id_product", referencedColumnName = "id")
-    var idProduct: ProductEntity? = null
 
     @Column(name = "value", nullable = false)
     var value: Double? = null

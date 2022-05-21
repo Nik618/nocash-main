@@ -22,9 +22,6 @@ class TransactionService {
     lateinit var transactionRepository: TransactionRepository
 
     @Autowired
-    lateinit var productRepository: ProductRepository
-
-    @Autowired
     lateinit var userRepository: UserRepository
 
     private var gson = Gson()
@@ -36,7 +33,6 @@ class TransactionService {
             date = Date()
             idUserTo = userRepository.findById(transaction.idUserTo!!).get()
             idUserFrom = userRepository.findById(transaction.idUserFrom!!).get()
-            idProduct = productRepository.findById(transaction.idProduct!!).get()
             value = transaction.value
         }
 
@@ -58,7 +54,6 @@ class TransactionService {
                 date = it?.date
                 idUserTo = it?.idUserTo?.id
                 idUserFrom = it?.idUserFrom?.id
-                idProduct = it?.idProduct?.id
                 value = it?.value
             })
         }
