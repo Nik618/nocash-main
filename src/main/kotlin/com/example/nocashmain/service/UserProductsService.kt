@@ -61,7 +61,7 @@ class UserProductsService {
         return gson.toJson(userProductsList)
     }
 
-    @GetMapping("/api/userproducts")
+    @GetMapping("/api/userproducts2")
     fun getUserProductsWithoutUserId(): String? {
         val userProductsList = UserProductsList()
         userProductsList.list = mutableListOf()
