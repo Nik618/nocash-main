@@ -55,10 +55,11 @@ class ProductService {
     fun getProduct(@RequestBody nameProduct : String, idCategory : String): String? {
         val products = Products()
         products.list = mutableListOf()
-        val productEntities : List<ProductEntity?> = if ((nameProduct != "" || idCategory != "")) {
-            productRepository.findAllByNameOrCategory(nameProduct, categoryRepository.findById(idCategory.toInt()).get())
-        } else
+        val productEntities : List<ProductEntity?> = if ((nameProduct == "" && idCategory == "")) {
             productRepository.findAll()
+        } else
+            productRepository.findAllByNameOrCategory(nameProduct, categoryRepository.findById(idCategory.toInt()).get())
+
         productEntities.forEach() {
             products.list.add(Product().apply {
                 id = it?.id
