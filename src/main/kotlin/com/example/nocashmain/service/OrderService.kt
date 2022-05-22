@@ -74,15 +74,14 @@ class OrderService {
         orderEntity.idTransaction?.value = price
         transactionRepository.save(orderEntity.idTransaction!!)
 
-        val userEntity = userRepository.findById(orderEntity.idTransaction?.idUserFrom!!.id!!).get()
-        userEntity.balance = userEntity.balance!! + price
-        println("\n\n\n" + userEntity.balance)
-        userRepository.save(userEntity)
+//        val userEntity = userRepository.findById(orderEntity.idTransaction?.idUserFrom!!.id!!).get()
+//        userEntity.balance = userEntity.balance!! + price
 
-        val userEntity2 = userRepository.findById(orderEntity.idTransaction?.idUserTo!!.id!!).get()
-        userEntity2.balance = userEntity2.balance!! - price
-        println("\n\n\n" + userEntity2.balance)
-        userRepository.save(userEntity2)
+        orderEntity.idTransaction?.idUserFrom?.balance = orderEntity.idTransaction?.idUserFrom?.balance!! + price
+        userRepository.save(orderEntity.idTransaction?.idUserFrom!!)
+
+        orderEntity.idTransaction?.idUserTo?.balance = orderEntity.idTransaction?.idUserTo?.balance!! - price
+        userRepository.save(orderEntity.idTransaction?.idUserTo!!)
 
         return orderRepository.save(orderEntity)
     }
