@@ -63,6 +63,7 @@ class OrderService {
                 idOrder = orderEntity
                 idProduct = it?.idProduct
                 count = it?.count
+                //if ()
                 price += count?.times(idProduct?.price!!)!!
                 println(price)
             }
@@ -74,11 +75,11 @@ class OrderService {
         transactionRepository.save(orderEntity.idTransaction!!)
 
         val userEntity = userRepository.findById(orderEntity.idTransaction?.idUserFrom!!.id!!).get()
-        userEntity.balance = userEntity.balance?.plus(orderEntity.idTransaction?.value!!)
+        userEntity.balance = userEntity.balance?.plus(price)
         userRepository.save(userEntity)
 
         val userEntity2 = userRepository.findById(orderEntity.idTransaction?.idUserTo!!.id!!).get()
-        userEntity.balance = userEntity2.balance?.minus(orderEntity.idTransaction?.value!!)
+        userEntity.balance = userEntity2.balance?.minus(price)
         userRepository.save(userEntity)
 
         return orderRepository.save(orderEntity)
