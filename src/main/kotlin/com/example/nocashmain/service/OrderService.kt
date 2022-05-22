@@ -54,7 +54,7 @@ class OrderService {
         orderRepository.save(orderEntity)
         //val cartItemsEntity = cartItemsRepository.findByIdUser(transactionRepository.findById(order.idTransaction!!).get().idUserFrom?.id!!).get(0)
 
-        val cartItemsEntities = cartItemsRepository.findAllByIdUser(transactionRepository.findById(order.idTransaction!!).get().idUserFrom!!)
+        val cartItemsEntities = cartItemsRepository.findAllByIdUser(transactionRepository.findById(order.idTransaction!!).get().idUserTo!!)
 
         var price = 0.0
 
