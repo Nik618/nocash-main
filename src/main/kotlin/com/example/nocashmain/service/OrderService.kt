@@ -128,7 +128,7 @@ class OrderService {
 
     @PostMapping("/api/update/order/status")
     fun updateOrderStatus(@RequestBody request : String): OrderEntity? {
-        val status: Status = gson.fromJson(request, object : TypeToken<Order>() {}.type)
+        val status: Status = gson.fromJson(request, object : TypeToken<Status>() {}.type)
         val orderEntity = orderRepository.findById(status.id!!).get()
 
         if (status.status == "cancel") {

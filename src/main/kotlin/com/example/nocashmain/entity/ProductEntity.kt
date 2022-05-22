@@ -9,11 +9,13 @@ class ProductEntity {
     constructor(_name : String,
                 _description : String,
                 _count : Int,
+                _image : String,
                 _category : CategoryEntity
     ): this() {
         this.name = _name
         this.description = _description
         this.count = _count
+        this.image = _image
         this.category = _category
     }
 
@@ -35,6 +37,9 @@ class ProductEntity {
 
     @Column(name = "price", nullable = false)
     var price: Int? = null
+
+    @Column(name = "image")
+    var image: String? = null
 
     @OneToOne(cascade = [(CascadeType.MERGE)])
     @JoinColumn(name = "category", referencedColumnName = "id")

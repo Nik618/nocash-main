@@ -47,7 +47,7 @@ class ProductService {
             description = product.description
             count = product.count
             price = product.price
-
+            image = product.image
         }
 
         productRepository.save(productEntity)
@@ -82,6 +82,7 @@ class ProductService {
                 description = it?.description
                 count = it?.count
                 price = it?.price
+                image = it?.image
             })
         }
         return gson.toJson(products)
@@ -96,6 +97,7 @@ class ProductService {
         productEntity.category = categoryRepository.findById(product.category!!).get()
         productEntity.description = product.description
         productEntity.count = product.count
+        productEntity.image = product.image
 
         return productRepository.save(productEntity)
     }

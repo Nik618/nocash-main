@@ -8,6 +8,7 @@ data class ProductIn (
     var id: Int? = null,
     var name: String? = null,
     var category: Int? = null,
+    var image: String? = null,
     var description: String? = null,
     var count: Int? = null,
     var price: Int? = null,
