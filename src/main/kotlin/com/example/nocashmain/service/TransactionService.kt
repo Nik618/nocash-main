@@ -34,10 +34,6 @@ class TransactionService {
             value = transaction.value
         }
 
-        val userEntity = userRepository.findById(transaction.idUserFrom!!).get()
-        userEntity.balance = userEntity.balance?.minus(transaction.value!!)
-        userRepository.save(userEntity)
-
         return transactionRepository.save(transactionEntity)
     }
 
