@@ -79,8 +79,8 @@ class OrderService {
         userRepository.save(userEntity)
 
         val userEntity2 = userRepository.findById(orderEntity.idTransaction?.idUserTo!!.id!!).get()
-        userEntity.balance = userEntity2.balance?.minus(price)
-        userRepository.save(userEntity)
+        userEntity2.balance = userEntity2.balance?.minus(price)
+        userRepository.save(userEntity2)
 
         return orderRepository.save(orderEntity)
     }
