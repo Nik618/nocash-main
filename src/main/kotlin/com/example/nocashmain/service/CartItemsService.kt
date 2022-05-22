@@ -65,6 +65,7 @@ class CartItemsService {
                     description = it?.idProduct?.description
                     count = it?.idProduct?.count
                     price = it?.idProduct?.price
+                    image = it?.idProduct?.image
                 }
                 count = it?.count
             })
